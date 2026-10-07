@@ -1,5 +1,9 @@
 ## Requirements
 
+**DGX Spark (GB10 / Linux ARM64):** use the [DGX Spark guide](dgx-spark.md)
+and `uv sync --locked --python 3.12 --extra cu130`. The generic CUDA 12
+instructions below describe the original upstream environments.
+
 - GPU Memory: 24GB (Inference)
 - System: Linux, WSL
 
