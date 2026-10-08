@@ -14,8 +14,8 @@ classifiers = [
 ]
 dependencies = [
     "numpy",
-    "torch==2.8.0",
-    "torchaudio==2.8.0",
+    "torch>=2.8.0,<=2.10.0",
+    "torchaudio>=2.8.0,<=2.10.0",
     "transformers<=4.57.3",
     "datasets==2.18.0",
     "lightning>=2.1.0",
@@ -71,6 +71,13 @@ cu129 = [
   "torchaudio",
 ]
 
+# DGX Spark: official Linux ARM64 CUDA 13 wheels, including audio decoding.
+cu130 = [
+  "torch==2.10.0",
+  "torchaudio==2.10.0",
+  "torchcodec==0.10.0",
+]
+
 [tool.uv]
 override-dependencies = [
     # descript-audiotools (transitive via descript-audio-codec) pins protobuf<3.20,
@@ -83,7 +90,9 @@ conflicts = [
     { extra = "cu126" },
     { extra = "cu128" },
     { extra = "cu129" },
+    { extra = "cu130" },
   ],
+  [{ extra = "stable" }, { extra = "cu130" }],
 ]
 
 [tool.uv.sources]
@@ -92,13 +101,22 @@ torch = [
   { index = "pytorch-cu126", extra = "cu126" },
   { index = "pytorch-cu128", extra = "cu128" },
   { index = "pytorch-cu129", extra = "cu129" },
+  { index = "pytorch-cu130", extra = "cu130" },
 ]
 torchaudio = [
   { index = "pytorch-cpu", extra = "cpu" },
   { index = "pytorch-cu126", extra = "cu126" },
   { index = "pytorch-cu128", extra = "cu128" },
   { index = "pytorch-cu129", extra = "cu129" },
+  { index = "pytorch-cu130", extra = "cu130" },
 ]
+
+torchcodec = [{ index = "pytorch-cu130", extra = "cu130" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
