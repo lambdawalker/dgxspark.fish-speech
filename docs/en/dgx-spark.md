@@ -130,6 +130,24 @@ uv run --locked --extra cu130 python tools/run_webui.py --device cuda --compile
 Compilation is a separate, unverified step and may have GB10/Triton-specific
 issues. If only compilation fails, omit `--compile` while investigating it.
 
+### Start script (LAN access, compiled inference)
+
+After setup and downloading the checkpoints, run:
+
+```bash
+./start.sh
+```
+
+The script enables `--compile`, listens on `0.0.0.0`, and disables public Gradio
+sharing, including any inherited `GRADIO_SHARE=True` setting. Open
+`http://<SPARK_LOCAL_IP>:7860` from another device on your local network; use
+`hostname -I` on the Spark to find its address. Stop the server with Ctrl+C.
+
+The compilation cache defaults to `$HOME/.cache/fish-speech/inductor` and can be
+overridden with `TORCHINDUCTOR_CACHE_DIR`. Cached artifacts can reduce subsequent
+startup time; warm-up and recompilation may still occur. The script can be
+launched from another directory and forwards extra WebUI arguments unchanged.
+
 For the API instead of Gradio:
 
 ```bash
