@@ -1,6 +1,8 @@
 > **DGX Spark fork:** Start with the [DGX Spark setup guide](docs/en/dgx-spark.md)
 > for Python 3.12, PyTorch 2.10.0, and CUDA 13 ARM64 wheels. Hardware validation
 > is pending; this is a dependency-only compatibility attempt.
+> Launch with `./start-webui.sh` or `./start-api.sh`; see the
+> [standalone Python API client](docs/en/local-api-client.md).
 
 <div align="center">
 <h1>Fish Speech</h1>

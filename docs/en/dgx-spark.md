@@ -135,7 +135,7 @@ issues. If only compilation fails, omit `--compile` while investigating it.
 After setup and downloading the checkpoints, run:
 
 ```bash
-./start.sh
+./start-webui.sh
 ```
 
 The script enables `--compile`, listens on `0.0.0.0`, and disables public Gradio
@@ -151,8 +151,19 @@ launched from another directory and forwards extra WebUI arguments unchanged.
 For the API instead of Gradio:
 
 ```bash
-uv run --locked --extra cu130 python tools/api_server.py --device cuda --listen 127.0.0.1:8080
+./start-api.sh
 ```
+
+The API listens on `http://<SPARK_LOCAL_IP>:8080` with compilation and the same
+persistent compilation cache. Extra arguments are forwarded, for example:
+
+```bash
+./start-api.sh --listen 127.0.0.1:8080
+```
+
+The old `start.sh` is now `start-webui.sh`. Both launchers require downloaded
+checkpoints. Run the API or WebUI as needed; each process loads its own model.
+See [the Python API client guide](local-api-client.md) for all endpoint wrappers.
 
 ## If anything fails
 
