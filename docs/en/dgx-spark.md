@@ -1,7 +1,7 @@
 # DGX Spark setup
 
 This guide covers native Linux ARM64 installation on the DGX Spark's GB10 GPU.
-The model and inference code are unchanged. Dependency resolution has been
+The model and inference code are unchanged. This branch now makes CUDA 13.0 the default dependency stack for the whole Python project. Dependency resolution has been
 checked for Linux ARM64 / Python 3.12, and a DGX Spark user reported successfully
 running the WebUI with this dependency profile. Compiled inference and all
 reference-audio formats have not been independently validated on the hardware.
@@ -43,7 +43,7 @@ On DGX Spark's Ubuntu host, run the installer as your normal user:
 ```
 
 It checks for Linux ARM64 and uv, uses sudo for the required Ubuntu system
-packages, and runs `uv sync --locked --python 3.12 --extra cu130` as your user.
+packages, and runs `uv sync --python 3.12` as your user.
 It does not download model weights or change the NVIDIA driver. You can rerun
 it to synchronize the environment after pulling updates.
 
@@ -55,19 +55,13 @@ nvidia-smi                     # must detect the GB10
 sudo apt-get update
 sudo apt-get install -y build-essential python3-dev portaudio19-dev libsox-dev libsndfile1 ffmpeg
 
-uv sync --locked --python 3.12 --extra cu130
+uv sync --python 3.12
 ```
 
 This creates/updates the project's `.venv`, not your global Python environment.
-Keep `--extra cu130` on subsequent `uv run` and `uv sync` commands; otherwise uv
-can switch back to a different Torch build. Do not combine it with `stable`,
-`cpu`, `cu126`, `cu128`, or `cu129`, and do not use `--all-extras`.
+CUDA 13 is selected by default for `uv sync` and `uv run`; no `--extra` flag is needed. This changes the project's default dependency stack and is not appropriate for non-CUDA-13 hosts.
 
-Use uv for this setup: pip does not read `[tool.uv.sources]`, the extra conflicts,
-or the existing protobuf override. A plain `pip install -e '.[cu130]'` does not
-reproduce the locked environment. The older backend extras remain pinned to
-Torch 2.8.0; `stable` explicitly selects the upstream 2.8 stack. A bare install
-without an extra is not the Spark setup.
+Use uv for this setup: pip does not read `[tool.uv.sources]` or the existing protobuf override. The configuration now targets CUDA 13.0 by default; the older CPU/CUDA 12 extras are no longer provided by this branch.
 
 ## Verify CUDA and reference-audio decoding
 
@@ -76,7 +70,7 @@ CUDA operations, and decodes a generated WAV from both a path and memory using
 the same TorchAudio API used by Fish Speech. It needs no checkpoints.
 
 ```bash
-uv run --locked --extra cu130 python - <<'PY'
+uv run python - <<'PY'
 import io
 import platform
 import tempfile
@@ -93,7 +87,7 @@ print("Torch:", torch.__version__)
 print("TorchAudio:", torchaudio.__version__)
 print("TorchCodec:", torchcodec.__version__)
 print("CUDA runtime:", torch.version.cuda)
-assert torch.cuda.is_available(), "CUDA unavailable: check driver and selected extra"
+assert torch.cuda.is_available(), "CUDA unavailable: check driver and PyTorch installation"
 print("GPU:", torch.cuda.get_device_name(0))
 print("Capability:", torch.cuda.get_device_capability(0))
 print("Wheel architectures:", torch.cuda.get_arch_list())
@@ -124,8 +118,8 @@ PY
 ## Download and run
 
 ```bash
-uv run --locked --extra cu130 hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro
-uv run --locked --extra cu130 python tools/run_webui.py --device cuda
+uv run hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro
+uv run python tools/run_webui.py --device cuda
 ```
 
 Open the local URL printed by Gradio (normally `http://127.0.0.1:7860`).
@@ -138,7 +132,7 @@ basic GPU execution is checked before Triton compilation. After both succeed,
 you can try:
 
 ```bash
-uv run --locked --extra cu130 python tools/run_webui.py --device cuda --compile
+uv run python tools/run_webui.py --device cuda --compile
 ```
 
 Compilation is a separate, unverified step and may have GB10/Triton-specific
@@ -147,7 +141,7 @@ issues. If only compilation fails, omit `--compile` while investigating it.
 For the API instead of Gradio:
 
 ```bash
-uv run --locked --extra cu130 python tools/api_server.py --device cuda --listen 127.0.0.1:8080
+uv run python tools/api_server.py --device cuda --listen 127.0.0.1:8080
 ```
 
 ## If anything fails
