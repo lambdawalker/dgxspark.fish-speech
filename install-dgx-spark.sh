@@ -28,15 +28,15 @@ echo "Installing system dependencies (sudo may ask for your password)..."
 sudo apt-get update
 sudo apt-get install -y build-essential python3-dev portaudio19-dev libsox-dev libsndfile1 ffmpeg
 
-echo "Installing the locked Python 3.12 / CUDA 13 environment with uv..."
-uv sync --locked --python 3.12 --extra cu130
+echo "Installing the Python 3.12 / CUDA 13 environment with uv..."
+uv sync --python 3.12
 
 cat <<'EOF'
 Installation complete. Download the model weights if you do not have them yet:
-  uv run --locked --extra cu130 hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro
+  uv run --locked hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro
 
 Start the WebUI:
-  uv run --locked --extra cu130 python tools/run_webui.py --device cuda
+  uv run --locked python tools/run_webui.py --device cuda
 
 See docs/en/dgx-spark.md for GPU and audio diagnostics.
 EOF
