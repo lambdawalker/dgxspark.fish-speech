@@ -1,0 +1,1099 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Targeting SOTA TTS solutions.">
+      
+      
+      
+        <link rel="canonical" href="https://speech.fish.audio/ko/dgx-spark/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="../../dgx-spark/" hreflang="en">
+        
+          <link rel="alternate" href="../../zh/dgx-spark/" hreflang="zh">
+        
+          <link rel="alternate" href="../../ja/dgx-spark/" hreflang="ja">
+        
+          <link rel="alternate" href="../../pt/dgx-spark/" hreflang="pt">
+        
+          <link rel="alternate" href="../../es/dgx-spark/" hreflang="es">
+        
+          <link rel="alternate" href="./" hreflang="ko">
+        
+          <link rel="alternate" href="../../ar/dgx-spark/" hreflang="ar">
+        
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>DGX Spark setup - Fish Audio</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dgx-spark-setup" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="https://speech.fish.audio" title="Fish Audio" class="md-header__button md-logo" aria-label="Fish Audio" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Fish Audio
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DGX Spark setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="언어설정">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../dgx-spark/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../zh/dgx-spark/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ja/dgx-spark/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt/dgx-spark/" hreflang="pt" class="md-select__link">
+              Português (Brasil)
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../es/dgx-spark/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ko" class="md-select__link">
+              한국어
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ar/dgx-spark/" hreflang="ar" class="md-select__link">
+              العربية
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="공유" aria-label="공유" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/fishaudio/fish-speech" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    fishaudio/fish-speech
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://speech.fish.audio" title="Fish Audio" class="md-nav__button md-logo" aria-label="Fish Audio" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Fish Audio
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/fishaudio/fish-speech" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    fishaudio/fish-speech
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    소개
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    설치
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    추론
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useful-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-pytorch-210-and-cuda-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why PyTorch 2.10 and CUDA 13?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual install
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual install">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protobuf-6-is-required-on-the-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protobuf 6 is required on the Spark
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytorch-and-gb10-compute-capability-121" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch and GB10 compute capability 12.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-cuda-and-reference-audio-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify CUDA and reference-audio decoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measured-s2-pro-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measured S2-Pro performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measured S2-Pro performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interactive-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drama-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drama 3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Drama 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-a-reference-voice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use a reference voice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-and-chunk-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming and chunk length
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebUI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#if-anything-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If anything fails
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/fishaudio/fish-speech/blob/main/docs/en/dgx-spark.md" title="이 페이지를 편집" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/fishaudio/fish-speech/raw/main/docs/en/dgx-spark.md" title="페이지소스 보기" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="dgx-spark-setup">DGX Spark setup</h1>
+<p>This fork runs Fish Speech 3.0 on the NVIDIA DGX Spark (GB10). Both <strong>S2-Pro</strong>
+and <strong>Drama 3</strong> are validated in the native PyTorch path. S2-Pro is the default
+for lighter memory use; Drama 3 is the 35B-A3B flagship and needs a reference
+voice for reliable end-of-speech behavior. See <a href="#drama-3">Drama 3</a>.</p>
+<p>Validated on 2026-10-26 with:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU</td>
+<td>NVIDIA GB10, compute capability 12.1, 121 GiB unified memory</td>
+</tr>
+<tr>
+<td>Driver</td>
+<td>580.173.02</td>
+</tr>
+<tr>
+<td>CUDA runtime</td>
+<td>13.0</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>3.12.3</td>
+</tr>
+<tr>
+<td>PyTorch</td>
+<td>2.10.0+cu130</td>
+</tr>
+<tr>
+<td>TorchAudio / TorchCodec</td>
+<td>2.10.0 / 0.10.0</td>
+</tr>
+<tr>
+<td>Triton</td>
+<td>3.6.0</td>
+</tr>
+<tr>
+<td>Protobuf</td>
+<td>6.33.6</td>
+</tr>
+</tbody>
+</table>
+<p>The upstream root project still pins PyTorch 2.8. The Spark environment is a
+separate uv project, <code>environments/dgx-spark</code>, with its own lockfile. This keeps
+upstream installs reproducible while allowing CUDA 13 ARM64 wheels here.</p>
+<h2 id="quick-start">Quick start</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>/home/spark/opt/TTS/dgxspark.fish-speech
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./start.sh
+</span></code></pre></div>
+<p>On the first run <code>start.sh</code>:</p>
+<ol>
+<li>creates <code>environments/dgx-spark/.venv</code> with the locked CUDA 13 environment,</li>
+<li>builds the Awesome WebUI once, and</li>
+<li>starts the API on <code>0.0.0.0:8080</code>, resolving <code>fishaudio/s2-pro</code> through the shared
+   Hugging Face cache and enabling S2-Pro <code>--compile</code>.</li>
+</ol>
+<p>Open <code>http://&lt;SPARK_IP&gt;:8080/ui</code>. The API is at
+<code>http://&lt;SPARK_IP&gt;:8080/v1/</code>. Startup takes about 2–2.5 minutes because the
+model is loaded and the decode function is compiled; later requests reuse the
+Inductor cache in <code>~/.cache/fish-speech/inductor</code>.</p>
+<p>For the MCP server, see <a href="../mcp/">MCP server</a>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./start.sh<span class="w"> </span>mcp<span class="w">          </span><span class="c1"># same as ./start-mcp.sh</span>
+</span></code></pre></div>
+<h3 id="useful-environment-variables">Useful environment variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FISH_MODEL</code></td>
+<td><code>fishaudio/s2-pro</code></td>
+<td><code>fishaudio/s2-pro</code>, <code>fishaudio/drama-3</code>, or a local path.</td>
+</tr>
+<tr>
+<td><code>FISH_COMPILE</code></td>
+<td><code>1</code> for S2-Pro</td>
+<td>Set <code>0</code> for eager mode (slower steady state, faster startup).</td>
+</tr>
+<tr>
+<td><code>FISH_COMPILE_MODE</code></td>
+<td><code>default</code></td>
+<td>Passed to <code>torch.compile</code>; <code>reduce-overhead</code> was not stable here.</td>
+</tr>
+<tr>
+<td><code>FISH_DEVICE</code></td>
+<td>unset</td>
+<td>Example: <code>cuda:0</code>; passed as <code>--device</code>.</td>
+</tr>
+<tr>
+<td><code>FISH_LISTEN</code></td>
+<td><code>0.0.0.0:8080</code></td>
+<td>Example: <code>127.0.0.1:8080</code> for loopback only.</td>
+</tr>
+<tr>
+<td><code>FISH_OFFLINE</code></td>
+<td><code>0</code></td>
+<td>Set <code>1</code> to pass <code>--offline</code> and never contact the Hub.</td>
+</tr>
+<tr>
+<td><code>FISH_SKIP_WEBUI</code></td>
+<td><code>0</code></td>
+<td>Set <code>1</code> to skip the one-time WebUI build.</td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Eager S2-Pro, loopback only</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">FISH_COMPILE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">FISH_LISTEN</span><span class="o">=</span><span class="m">127</span>.0.0.1:8080<span class="w"> </span>./start.sh
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Select Drama 3 without automatic compilation</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>./start.sh<span class="w"> </span>--model<span class="w"> </span>fishaudio/drama-3
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Use an explicit local checkpoint; let the resolver find the codec</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>./start.sh<span class="w"> </span>--llama-checkpoint-path<span class="w"> </span>/data/checkpoints/my-s2
+</span></code></pre></div>
+<p>CLI model selection overrides <code>FISH_MODEL</code>. Existing <code>checkpoints/</code> files do not
+override the default shared HF cache. Local checkpoints must be selected explicitly;
+<code>FISH_MODEL=/data/checkpoints/my-s2</code> also works. The codec resolver checks the local
+checkpoint, then a sibling <code>s2-pro/codec.pth</code>, then the HF cache. Use
+<code>--decoder-checkpoint-path</code> to override it.</p>
+<p><code>--revision</code> and <code>--offline</code> are passed directly to the API resolver. There is no
+separate startup download; <code>FISH_SKIP_DOWNLOAD</code> is no longer needed. To prevent
+Hub requests, use <code>--offline</code> or <code>FISH_OFFLINE=1</code>.</p>
+<p>The older <code>./start-api.sh</code> and <code>./start-webui.sh</code> launchers still work and accept
+the same API flags. <code>start.sh</code> is the supported one-command path.</p>
+<h2 id="why-pytorch-210-and-cuda-13">Why PyTorch 2.10 and CUDA 13?</h2>
+<p>PyTorch 2.9 has CUDA 13 ARM64 wheels, but TorchAudio 2.9+ uses TorchCodec for
+<code>torchaudio.load</code>, which Fish Speech uses for reference audio. The TorchCodec
+0.8/0.9 wheels compatible with PyTorch 2.9 did not include Linux ARM64 in the
+indexes checked by the fork. The PyTorch 2.10 / TorchCodec 0.10 pair provides
+official ARM64 wheels without a source build.</p>
+<p>The host must still have a working NVIDIA driver compatible with CUDA 13.
+<code>nvidia-smi</code> reports the driver; <code>nvcc --version</code> reports the separately
+installed toolkit. Neither proves that the Python environment has a CUDA build.
+The diagnostic below checks the Python side.</p>
+<h2 id="manual-install">Manual install</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uname<span class="w"> </span>-m<span class="w">                       </span><span class="c1"># expected: aarch64</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>nvidia-smi<span class="w">                     </span><span class="c1"># must detect the GB10</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>build-essential<span class="w"> </span>python3-dev<span class="w"> </span>portaudio19-dev<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>libsox-dev<span class="w"> </span>libsndfile1<span class="w"> </span>ffmpeg
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>uv<span class="w"> </span>sync<span class="w"> </span>--project<span class="w"> </span>environments/dgx-spark<span class="w"> </span>--locked<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12<span class="w"> </span>--extra<span class="w"> </span>cu130
+</span></code></pre></div>
+<p>Or run <code>./install-dgx-spark.sh</code>, which performs the same steps.</p>
+<p>The environment lives in <code>environments/dgx-spark/.venv</code>. Keep both <code>--project
+environments/dgx-spark</code> and <code>--extra cu130</code> on manual uv commands. An existing
+root <code>.venv</code> is not reused.</p>
+<h3 id="protobuf-6-is-required-on-the-spark">Protobuf 6 is required on the Spark</h3>
+<p>The upstream override caps Protobuf below 6, but the installed TensorBoard
+(transitive through <code>descript-audiotools</code>) contains generated code that requires
+Protobuf 6.31 or newer. With Protobuf 5 the API fails at import with
+<code>Detected incompatible Protobuf Gencode/Runtime versions</code>. The Spark project
+overrides this to <code>protobuf&gt;=6.31.1,&lt;7.0.0</code>; the root project is unchanged.
+The lock currently resolves to 6.33.6.</p>
+<h3 id="pytorch-and-gb10-compute-capability-121">PyTorch and GB10 compute capability 12.1</h3>
+<p>PyTorch 2.10’s CUDA 13 wheel advertises support through SM 12.0. The GB10
+reports SM 12.1, so PyTorch prints a warning. In practice BF16 matmul, SDPA, the
+DAC codec, and end-to-end S2-Pro generation all run; the wheel contains
+<code>compute_120</code> PTX, which the driver JITs for SM 12.1. Treat this as a
+compatibility risk for less common kernels, not as a blocker for the tested
+S2-Pro path.</p>
+<h2 id="verify-cuda-and-reference-audio-decoding">Verify CUDA and reference-audio decoding</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>environments/dgx-spark<span class="w"> </span>--locked<span class="w"> </span>--extra<span class="w"> </span>cu130<span class="w"> </span>python<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'PY'</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s">import io</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s">import tempfile</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s">import wave</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">from pathlib import Path</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s">import torch</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s">import torchaudio</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s">import torchcodec</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s">print("Torch:", torch.__version__)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s">print("TorchAudio:", torchaudio.__version__)</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s">print("TorchCodec:", torchcodec.__version__)</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s">print("CUDA runtime:", torch.version.cuda)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="s">assert torch.cuda.is_available(), "CUDA unavailable: check driver and selected extra"</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="s">print("GPU:", torch.cuda.get_device_name(0))</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="s">print("Capability:", torch.cuda.get_device_capability(0))</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="s">print("Wheel architectures:", torch.cuda.get_arch_list())</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="s">assert torch.version.cuda == "13.0", "Expected a cu130 Torch build"</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="s">x = torch.randn(256, 256, device="cuda", dtype=torch.bfloat16)</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="s">assert torch.isfinite(x @ x.T).all().item()</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="s">q = torch.randn(1, 2, 64, 64, device="cuda", dtype=torch.bfloat16)</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="s">assert torch.isfinite(</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="s">    torch.nn.functional.scaled_dot_product_attention(q, q, q)</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="s">).all().item()</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="s">torch.cuda.synchronize()</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="s">print("CUDA BF16 matmul and attention: OK")</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="s">with tempfile.TemporaryDirectory() as directory:</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="s">    path = Path(directory) / "probe.wav"</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="s">    with wave.open(str(path), "wb") as wav:</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="s">        wav.setnchannels(1)</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="s">        wav.setsampwidth(2)</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="s">        wav.setframerate(16000)</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="s">        wav.writeframes(b"\x00\x00" * 1600)</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="s">    for source in (str(path), io.BytesIO(path.read_bytes())):</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="s">        audio, rate = torchaudio.load(source)</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="s">        assert rate == 16000 and tuple(audio.shape) == (1, 1600)</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="s">print("Reference audio decoding (file and bytes): OK")</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="s">PY</span>
+</span></code></pre></div>
+<h2 id="measured-s2-pro-performance">Measured S2-Pro performance</h2>
+<p>Measured on the idle GB10 with <code>tools/benchmark_tts.py</code>, seed 42, no reference
+audio, 44.1 kHz mono WAV, three runs per case. “RTF” is wall time divided by
+generated audio duration; lower is better, and RTF &lt; 1 is faster than real time.</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th style="text-align: right;">Audio</th>
+<th style="text-align: right;">Eager wall / RTF</th>
+<th style="text-align: right;">Compiled wall / RTF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>short, 12 chars</td>
+<td style="text-align: right;">0.98 s</td>
+<td style="text-align: right;">2.37 s / 2.43</td>
+<td style="text-align: right;">1.79 s / 1.84</td>
+</tr>
+<tr>
+<td>medium, 99 chars</td>
+<td style="text-align: right;">6.36 s</td>
+<td style="text-align: right;">14.30 s / 2.25</td>
+<td style="text-align: right;">9.72 s / 1.57</td>
+</tr>
+<tr>
+<td>long, 250 chars</td>
+<td style="text-align: right;">16.07 s</td>
+<td style="text-align: right;">36.72 s / 2.29</td>
+<td style="text-align: right;">24.24 s / 1.56</td>
+</tr>
+</tbody>
+</table>
+<p>Decode throughput rises from about <strong>7.6 to 14.5 tokens/s</strong>; effective bandwidth
+reported by the inference loop rises from about <strong>34.5 to 66 GB/s</strong>. Peak GPU
+memory is about <strong>20–21 GiB</strong>. GPU utilization is 91–94%, power draw 26–39 W,
+and temperature 49–57 °C. Compilation adds roughly 50 s to startup.</p>
+<p>S2-Pro therefore runs at <strong>RTF ≈ 1.56</strong> on this GB10 in the tested
+single-request configuration: about 1.5 seconds of compute per second of audio,
+not faster than real time. See the <a href="../dgx-spark-report/">DGX Spark report</a> for
+the analysis and limitations.</p>
+<h3 id="interactive-streaming">Interactive streaming</h3>
+<p>The streaming WAV header arrives in about 20 ms, but audio arrives per text
+chunk. On the 250-character test, the chunking fix reduced first audio from
+21.5 s to <strong>10.0 s</strong> at the default <code>chunk_length=200</code>; using
+<code>chunk_length=100</code> reduces it to <strong>1.43 s</strong> with essentially the same total RTF
+(1.60 vs 1.56). For interactive use, pass <code>chunk_length=100</code> and verify prosody
+at chunk boundaries for your voice.</p>
+<p>The benchmarks can be reproduced against a running server:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python3<span class="w"> </span>tools/benchmark_tts.py<span class="w"> </span>--api-url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--runs<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>--output<span class="w"> </span>benchmarks/s2pro-compiled.json
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>python3<span class="w"> </span>tools/benchmark_tts.py<span class="w"> </span>--api-url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--streaming<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>--chunk-length<span class="w"> </span><span class="m">100</span><span class="w"> </span>--runs<span class="w"> </span><span class="m">1</span><span class="w"> </span>--output<span class="w"> </span>benchmarks/s2pro-streaming-chunk100.json
+</span></code></pre></div>
+<h2 id="drama-3">Drama 3</h2>
+<p>Drama 3 is a 35B-A3B hybrid-attention model with block-FP8 experts, a 4-layer
+codebook tower and CUDA-graph decode. The checkpoint is about <strong>41.5 GB</strong> (eight
+~5 GB shards plus the 1.87 GB codec); peak resident memory is <strong>41.3 GiB</strong>.
+Select it explicitly because S2-Pro remains the default:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./start.sh<span class="w"> </span>--model<span class="w"> </span>fishaudio/drama-3
+</span></code></pre></div>
+<p>Cold start on this Spark is <strong>67–70 s</strong>. The batched FP8 loader replaced 62,053
+per-expert copies with per-layer bulk transfers, reducing backbone load from
+about 5.5 minutes to 41 s.</p>
+<h3 id="use-a-reference-voice">Use a reference voice</h3>
+<p>Drama 3 without a reference is unreliable: in an 8-seed test, 5 seeds failed to
+emit EOS and ran to the token cap, appending near-silence. With a reference, all
+four tested seeds stopped naturally at 5.6–5.8 s. Register one with the API:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fishapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FishAPI</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">api</span> <span class="o">=</span> <span class="n">FishAPI</span><span class="p">(</span><span class="s1">'http://127.0.0.1:8080'</span><span class="p">)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">api</span><span class="o">.</span><span class="n">add_voice</span><span class="p">(</span><span class="s1">'narrator'</span><span class="p">,</span> <span class="s1">'reference.wav'</span><span class="p">,</span> <span class="s1">'Exact transcript of the reference.'</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Then send <code>reference_id: "narrator"</code> with each request.</p>
+<h3 id="streaming-and-chunk-length">Streaming and chunk length</h3>
+<p>Drama 3 honors <code>chunk_length</code> (100–1000 bytes), including the WebUI slider.
+<code>chunk_length=100</code> cuts first audio on the 250-character test to about <strong>1.4 s</strong>
+versus <strong>7.0 s</strong> at 200, at a small total-time cost. Smaller chunks can change
+prosody. <code>single_chunk=true</code> bypasses splitting.</p>
+<p>Useful switches:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FISH_DRAMA3_FP8_EXPERTS</code></td>
+<td>auto (<code>1</code> on SM89+)</td>
+<td><code>0</code> dequantizes experts to BF16; quality check/fallback, much more memory.</td>
+</tr>
+<tr>
+<td><code>FISH_DRAMA3_CUDA_GRAPH</code></td>
+<td><code>1</code></td>
+<td><code>0</code> disables CUDA-graph decode for debugging.</td>
+</tr>
+</tbody>
+</table>
+<p>At startup the log should show <code>FishOmni experts: block-FP8 W8A8</code>, the backbone
+placement, and the captured CUDA-graph buckets. If capture fails, retry with
+<code>FISH_DRAMA3_CUDA_GRAPH=0</code> to separate graph capture from model/kernel problems.
+See the <a href="../dgx-spark-report/">performance report</a> for measurement caveats.</p>
+<h2 id="webui">WebUI</h2>
+<p>The API serves Awesome WebUI at <code>/ui</code>. <code>start.sh</code> builds it once if <code>dist</code> is
+missing:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>awesome_webui<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="o">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>./start.sh
+</span></code></pre></div>
+<p>For loopback-only access:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">FISH_LISTEN</span><span class="o">=</span><span class="m">127</span>.0.0.1:8080<span class="w"> </span>./start.sh
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># On your desktop:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">8080</span>:127.0.0.1:8080<span class="w"> </span>spark@YOUR_SPARK
+</span></code></pre></div>
+<p>Then open <code>http://127.0.0.1:8080/ui</code>. There is no Gradio public-share tunnel.
+See the <a href="../local-api-client/">Python API client</a> and <a href="../mcp/">MCP server</a>.</p>
+<h2 id="if-anything-fails">If anything fails</h2>
+<p>Include the failing command, full traceback, <code>nvidia-smi</code> output, and the
+diagnostic output above. For install failures include <code>uv --version</code>; for
+TorchCodec shared-library failures include <code>ffmpeg -version</code>. A warning that the
+TorchAudio <code>backend</code> argument is ignored is expected with 2.9+.</p>
+<p>This guide covers the native ARM64 installation. The Docker/Compose defaults
+still describe the upstream CUDA 12 environment and are not a validated Spark
+path.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023-2025 by Fish Audio
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://discord.gg/Es5qTB9BcN" target="_blank" rel="noopener" title="discord.gg" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1.1s-.6.4-.8.8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2C162.5 39 122.2 51.5 84.1 69c-.3.1-.6.4-.8.7C7.1 183.5-13.8 294.6-3.6 404.2c0 .3.1.5.2.8s.3.4.5.6c44.4 32.9 94 58 146.8 74.2.4.1.8.1 1.1 0s.7-.4.9-.7c11.3-15.4 21.4-31.8 30-48.8.1-.2.2-.5.2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6.2-.9.3-.5.6-.7c3.1-2.3 6.2-4.7 9.1-7.1.3-.2.6-.4.9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1.7-.2 1-.2s.7.2.9.4c2.9 2.4 6 4.9 9.1 7.2.2.2.4.4.6.7s.2.6.2.9-.1.6-.3.9-.4.5-.6.6c-14.7 8.6-30 15.9-45.9 21.8-.2.1-.5.2-.7.4s-.3.4-.4.7-.1.5-.1.8.1.5.2.8c8.8 17 18.8 33.3 30 48.8.2.3.6.6.9.7s.8.1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2.2-.2.4-.4.5-.6s.2-.5.2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2m195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/fishaudio/fish-speech" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=jCKlUP7QgSm9kh95UlBoYv6s1I-Apl1M&authKey=xI5ttVAp3do68IpEYEalwXSYZFdfxZSkah%2BctF5FIMyN2NqAa003vFtLqJyAVRfF&noverify=0&group_code=593946093" target="_blank" rel="noopener" title="qm.qq.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M434.1 420.4c-11.5 1.4-44.9-52.7-44.9-52.7 0 31.3-16.1 72.2-51 101.8 16.8 5.2 54.8 19.2 45.8 34.4-7.3 12.3-125.5 7.9-159.6 4-34.1 3.8-152.3 8.3-159.6-4-9-15.2 28.9-29.2 45.8-34.4-34.9-29.5-51.1-70.4-51.1-101.8 0 0-33.3 54.1-44.9 52.7-5.4-.6-12.4-29.6 9.3-99.7 10.3-33 22-60.5 40.1-105.8C60.9 98 109.2-.1 224.3-.1 338-.1 387.5 96 384.6 214.9c18.1 45.2 29.9 72.9 40.1 105.8 21.8 70.1 14.7 99.1 9.3 99.7z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.action.edit", "content.action.view", "navigation.tracking", "navigation.footer", "search", "search.suggest", "search.highlight", "search.share", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
